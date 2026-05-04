@@ -22,15 +22,24 @@ document.getElementById("employeeForm").addEventListener("submit", function(e) {
         }
         return response.json();
     })
-    .then(data => {
-        document.getElementById("message").innerText = "Employee added successfully!";
-        document.getElementById("message").style.color = "green";
+    .then(() => {
+        const message = document.getElementById("message");
+
+        message.innerText = "Employee added successfully!";
+        message.style.color = "green";
 
         // clear form
         document.getElementById("employeeForm").reset();
+
+        setTimeout(() => {
+            message.innerText = "";
+        }, 2000);
+
     })
     .catch(error => {
-        document.getElementById("message").innerText = "Error: " + error.message;
-        document.getElementById("message").style.color = "red";
-    });
-});
+        const message = document.getElementById("message");
+
+        message.innerText = "Error: " + error.message;
+        message.style.color = "red";
+})
+}); 
