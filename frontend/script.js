@@ -23,23 +23,70 @@ document.getElementById("employeeForm").addEventListener("submit", function(e) {
         return response.json();
     })
     .then(() => {
-        const message = document.getElementById("message");
+        document.getElementById("message").innerText = "Employee added successfully!";
+        document.getElementById("message").style.color = "green";
 
-        message.innerText = "Employee added successfully!";
-        message.style.color = "green";
-
-        // clear form
         document.getElementById("employeeForm").reset();
 
-        setTimeout(() => {
-            message.innerText = "";
-        }, 2000);
+        loadEmployees();
 
+        setTimeout(() => {
+            document.getElementById("message").innerText = "";
+        }, 2000);
     })
     .catch(error => {
-        const message = document.getElementById("message");
+        document.getElementById("message").innerText = error.message;
+        document.getElementById("message").style.color = "red";
+    });
+});
 
-        message.innerText = "Error: " + error.message;
-        message.style.color = "red";
-})
-}); 
+
+// LOAD EMPLOYEES
+window.onload = function () {
+    loadEmployees();
+};
+
+
+// GET ALL EMPLOYEES
+function loadEmployees() {
+    fetch("http://localhost:8080/api/employees")
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById("employeeBody");
+            tableBody.innerHTML = "";
+
+            data.forEach(emp => {
+                const row = `
+                    <tr>
+                        <td>${emp.id}</td>
+                        <td>${emp.firstName} ${emp.lastName}</td>
+                        <td>${emp.email}</td>
+                        <td>${emp.department}</td>
+                        <td>${emp.salary}</td>
+                        <td>
+                            <button onclick="deleteEmployee(${emp.id})">Delete</button>
+                            <button onclick="editEmployee(${emp.id})">Edit</button>
+                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        });
+}
+
+
+// DELETE EMPLOYEE
+function deleteEmployee(id) {
+    if (confirm("Are you sure you want to delete this employee?")) {
+        fetch(`http://localhost:8080/api/employees/${id}`, {
+            method: "DELETE"
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to delete employee");
+            }
+            loadEmployees(); // refresh table
+        })
+        .catch(error => alert(error.message));
+    }
+}

@@ -28,6 +28,16 @@ button {
     cursor: pointer;
 }
 
+button:nth-child(1) {
+    background-color: #e74c3c;
+    color: white;
+}
+
+button:nth-child(2) {
+    background-color: #3498db;
+    color: white;
+}
+
 #message {
     margin-top: 10px;
     font-weight: bold;
