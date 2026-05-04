@@ -35,7 +35,7 @@ It supports full CRUD operations for managing employee records.
 
 ## Setup Instructions
 
-### 1. Clone the project
+## 1. Clone the project
 git clone <your-repo-link>
 cd employee-mgmt
 
