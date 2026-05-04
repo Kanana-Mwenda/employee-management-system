@@ -106,10 +106,7 @@ function deleteEmployee(id) {
     }
 }
 
-
-// =====================
 // EDIT EMPLOYEE
-// =====================
 function editEmployee(id) {
     fetch(`http://localhost:8080/api/employees/${id}`)
         .then(response => response.json())
