@@ -53,10 +53,31 @@ button[type="submit"]:hover {
     background-color: #27ae60;
 }
 
-/* Message */
-#message {
-    text-align: center;
-    font-weight: bold;
+/* Toast */
+#toast {
+    position: fixed;
+    top: 20px;
+    right: 0;
+    max-width: 90%;
+    min-width: 280px;
+    padding: 14px 18px;
+    background-color: #27ae60;
+    color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 1000;
+}
+
+#toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+#toast.error {
+    background-color: rgba(231, 76, 60, 0.95);
 }
 
 /* Table */

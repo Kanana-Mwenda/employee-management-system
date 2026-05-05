@@ -1,3 +1,15 @@
+function showToast(message, isError = false) {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.classList.toggle("error", isError);
+    toast.classList.add("show");
+
+    clearTimeout(toast.hideTimeout);
+    toast.hideTimeout = setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000);
+}
+
 document.getElementById("employeeForm").addEventListener("submit", function(e) {
     e.preventDefault();
 
@@ -31,23 +43,15 @@ document.getElementById("employeeForm").addEventListener("submit", function(e) {
         return response.json();
     })
     .then(() => {
-        document.getElementById("message").innerText =
-            id ? "Employee updated successfully!" : "Employee added successfully!";
-
-        document.getElementById("message").style.color = "green";
+        showToast(id ? "Employee updated successfully!" : "Employee added successfully!");
 
         document.getElementById("employeeForm").reset();
         document.getElementById("employeeId").value = "";
 
         loadEmployees();
-
-        setTimeout(() => {
-            document.getElementById("message").innerText = "";
-        }, 2000);
     })
     .catch(error => {
-        document.getElementById("message").innerText = error.message;
-        document.getElementById("message").style.color = "red";
+        showToast(error.message, true);
     });
 });
 
@@ -102,7 +106,7 @@ function deleteEmployee(id) {
             }
             loadEmployees();
         })
-        .catch(error => alert(error.message));
+        .catch(error => showToast(error.message, true));
     }
 }
 
