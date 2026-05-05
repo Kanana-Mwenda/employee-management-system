@@ -95,20 +95,43 @@ function loadEmployees() {
 }
 
 // DELETE EMPLOYEE
+let deleteId = null;
+
 function deleteEmployee(id) {
-    if (confirm("Are you sure you want to delete this employee?")) {
-        fetch(`http://localhost:8080/api/employees/${id}`, {
-            method: "DELETE"
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Failed to delete employee");
-            }
-            loadEmployees();
-        })
-        .catch(error => showToast(error.message, true));
-    }
+    deleteId = id;
+
+    document.getElementById("confirmModal").style.display = "flex";
+    document.body.classList.add("modal-open");
 }
+
+// CONFIRM DELETE
+document.getElementById("confirmDelete").addEventListener("click", function () {
+    fetch(`http://localhost:8080/api/employees/${deleteId}`, {
+        method: "DELETE"
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to delete employee");
+        }
+
+        closeModal();
+        loadEmployees();
+        showToast("Employee deleted successfully!");
+    })
+    .catch(error => {
+        closeModal();
+        showToast(error.message, true);
+    });
+});
+
+// CANCEL DELETE
+    document.getElementById("cancelDelete").addEventListener("click", closeModal);
+
+// CLOSE MODAL FUNCTION
+    function closeModal() {
+        document.getElementById("confirmModal").style.display = "none";
+        document.body.classList.remove("modal-open");
+    }
 
 // EDIT EMPLOYEE
 function editEmployee(id) {
